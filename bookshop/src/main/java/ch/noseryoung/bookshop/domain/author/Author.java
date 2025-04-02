@@ -1,14 +1,13 @@
 package ch.noseryoung.bookshop.domain.author;
 
-import ch.noseryoung.bookshop.domain.book.Book;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Past;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.util.Date;
-
-import java.util.LinkedHashSet;
-import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -23,15 +22,15 @@ public class Author {
     private UUID id;
 
     @Column(nullable = false)
+    @NotBlank(message = "Name cannot be empty")
     private String name;
 
     @Column(nullable = false)
+    @NotBlank(message = "Country cannot be empty")
     private String country;
 
     @Column(nullable = false)
+    @Past(message = "The birthdate of the author must lie in the past")
+    @NotNull(message = "Birthday cannot be null")
     private Date birthday;
-
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "author_id")
-    private Set<Book> products = new LinkedHashSet<>();
 }
