@@ -16,40 +16,37 @@ public class BookService {
     @Autowired private AuthorService authorService; // TODO: make to authorService
 
     public List<Book> findAllBooks(Double maxPrice, Boolean withAuthor) {
-        if (maxPrice == null) {
-            if (withAuthor|| withAuthor == null) { return bookRepository.findAll(); }
-            else { return bookRepository.findAllBooksWithoutAuthor(); }
-
+        if (maxPrice != null && maxPrice < 0) {
+            throw new IllegalArgumentException("maxPrice cannot be negative");
         }
-        if (maxPrice < 0) { throw new IllegalArgumentException("maxPrice cannot be negative"); }
+        if (maxPrice == null && (withAuthor == null || withAuthor)) {
+            return bookRepository.findAll();
+        }
+        if (maxPrice == null && !withAuthor) {
+            return bookRepository.findAllBooksWithoutAuthor();
+        }
+        if (!withAuthor) {
+            return bookRepository.findBookWithoutAuthorByPriceLessThanEqual(maxPrice);
+        }
         return bookRepository.findBookByPriceLessThanEqual(maxPrice);
     }
 
-
-    public Book finBookById(UUID bookId, Boolean withAuthor) {
-        return bookRepository.findById(bookId)
-                .orElseThrow(() -> new BookNotFoundException(bookId));
+    public Book findBookById(UUID bookId, Boolean withAuthor) {
+        if (bookRepository.existsById(bookId)) {
+            if (withAuthor == null || !withAuthor) {
+                return bookRepository.findBookWithoutAuthorById(bookId);
+            }
+            return bookRepository.findById(bookId)
+                    .orElseThrow(() -> new BookNotFoundException(bookId));
+        } else {
+            throw new BookNotFoundException(bookId);
+        }
+        
     }
 
     public List<Book> findBookByAuthorId(UUID authorId) {
         authorService.findAuthorById(authorId);
         return bookRepository.findBookByAuthorId(authorId);
-    }
-
-    public List<Book> findAllBooksWithoutAuthor() {
-        return bookRepository.findAll();
-    }
-
-    public Book findBookWithoutAuthorById(UUID bookId) {
-        return bookRepository.findById(bookId)
-                .orElseThrow(() -> new BookNotFoundException(bookId));
-    }
-
-    public List<Book> findAllBooksByMaxPrice(Double maxPrice) {
-        if (maxPrice != null) {
-            return bookRepository.findBookByPriceLessThanEqual(maxPrice);
-        }
-        return bookRepository.findAll();
     }
 
     public Book createBook(BookRequestDTO bookRequestDTO) {

@@ -19,4 +19,9 @@ public interface BookRepository extends JpaRepository<Book, UUID> {
 
     @Query(value = "SELECT book_id ,title, language, price FROM book WHERE book_id = ?", nativeQuery = true)
     List<Book> findBookWithoutAuthorById(UUID bookId);
+
+    @Query(value = "SELECT book_id ,title, language, price FROM book WHERE price < ?", nativeQuery = true)
+    List<Book> findBookWithoutAuthorByPriceLessThanEqual(Double maxPrice);
+
+
 }

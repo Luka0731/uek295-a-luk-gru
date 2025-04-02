@@ -27,7 +27,7 @@ public class BookController {
     public ResponseEntity<Book> getProductById(
             @PathVariable UUID id,
             @RequestParam(required = false) Boolean withAuthor) {
-        return ResponseEntity.ok(bookService.finBookById(id, withAuthor));
+        return ResponseEntity.ok(bookService.findBookById(id, withAuthor));
     }
 
     @GetMapping("/author/{authorId}")
