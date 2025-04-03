@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@Hidden
 @RequestMapping("/api/v1/books")
 public class BookController {
 
