@@ -1,6 +1,7 @@
 package ch.noseryoung.bookshop.domain.book;
 
-import ch.noseryoung.bookshop.domain.book.dto.BookRequestDTO;
+import ch.noseryoung.bookshop.domain.book.dto.BookCreateDTO;
+import ch.noseryoung.bookshop.domain.book.dto.BookUpdateDTO;
 import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,18 +37,18 @@ public class BookController {
     }
 
     @PostMapping
-    public ResponseEntity<Book> createBook(@Valid @RequestBody BookRequestDTO bookRequestDTO) {
+    public ResponseEntity<Book> createBook(@Valid @RequestBody BookCreateDTO bookRequestDTO) {
         return ResponseEntity.ok(bookService.createBook(bookRequestDTO));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Book> updateBook(@PathVariable UUID id, @Valid @RequestBody BookRequestDTO bookRequestDTO) {
-        return ResponseEntity.ok(bookService.updateBook(id, bookRequestDTO));
+    public ResponseEntity<Book> updateBook(@PathVariable UUID id, @Valid @RequestBody BookUpdateDTO bookUpdateDTO) {
+        return ResponseEntity.ok(bookService.updateBook(id, bookUpdateDTO));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteBook(@PathVariable UUID id) {
         bookService.deleteBook(id);
-        return ResponseEntity.noContent().build(); // TODO: Better out message
+        return ResponseEntity.noContent().build();
     }
 }

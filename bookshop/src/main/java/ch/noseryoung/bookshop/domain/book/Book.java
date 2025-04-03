@@ -1,6 +1,7 @@
 package ch.noseryoung.bookshop.domain.book;
 
 import ch.noseryoung.bookshop.domain.author.Author;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -37,5 +38,6 @@ public class Book {
     @ManyToOne
     @JoinColumn(name = "author_id", referencedColumnName = "author_id")
     @NotNull(message = "AuthorId cannot be null")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Author author;
 }

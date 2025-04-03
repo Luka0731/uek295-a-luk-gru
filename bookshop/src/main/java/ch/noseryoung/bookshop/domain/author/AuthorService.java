@@ -27,15 +27,19 @@ public class AuthorService {
         return authorRepository.save(author);
     }
 
-    public Author updateAuthor(UUID id, Author authorDetails) {
-        Author author = findAuthorById(id);
+    public Author updateAuthor(UUID authorId, Author authorDetails) {
+        Author author = authorRepository.findById(authorDetails.getId())
+                .orElseThrow(() -> new AuthorNotFoundException(authorId));
         author.setName(authorDetails.getName());
         author.setCountry(authorDetails.getCountry());
         author.setBirthday(authorDetails.getBirthday());
         return authorRepository.save(author);
     }
 
-    public void deleteAuthor(UUID id) {
-        authorRepository.deleteById(id);
+    public void deleteAuthor(UUID authorId) {
+        if (!authorRepository.existsById(authorId)) {
+            throw new AuthorNotFoundException(authorId);
+        }
+        authorRepository.deleteById(authorId);
     }
 }
