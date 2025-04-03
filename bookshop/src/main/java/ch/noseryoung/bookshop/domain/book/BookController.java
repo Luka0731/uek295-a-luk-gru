@@ -2,7 +2,6 @@ package ch.noseryoung.bookshop.domain.book;
 
 import ch.noseryoung.bookshop.domain.book.dto.BookCreateDTO;
 import ch.noseryoung.bookshop.domain.book.dto.BookUpdateDTO;
-import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
